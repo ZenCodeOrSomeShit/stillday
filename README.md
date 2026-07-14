@@ -5,7 +5,8 @@
   <p>Choose one thing. Work in a gentle interval. Keep the loose thoughts nearby.</p>
 </div>
 
-![Stillday desktop app](docs/stillday.png)
+<img width="1298" height="862" alt="{A9188C18-9169-4F09-B203-38A17C172872}" src="https://github.com/user-attachments/assets/bd23a6c2-257c-4743-879d-5328a85d07c2" />
+
 
 ## Why Stillday
 
