@@ -1,0 +1,50 @@
+{
+  "name": "stillday",
+  "version": "1.0.0",
+  "description": "A calm, local-first focus desk for Windows.",
+  "main": "main.cjs",
+  "author": "ZenCodeOrSomeShit",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "assets": "node scripts/build-assets.cjs",
+    "screenshot": "electron scripts/capture.cjs",
+    "dist": "npm run assets && electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^43.1.1",
+    "electron-builder": "^26.0.12",
+    "png-to-ico": "^2.1.8",
+    "sharp": "^0.34.3"
+  },
+  "build": {
+    "appId": "com.zencode.stillday",
+    "productName": "Stillday",
+    "artifactName": "Stillday-Setup-${version}.${ext}",
+    "asar": true,
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Stillday",
+      "uninstallDisplayName": "Stillday"
+    }
+  }
+}

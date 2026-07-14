@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; font-src 'self'" />
+    <title>Stillday</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="../assets/mark.svg" alt="" />
+          <span>Stillday</span>
+        </div>
+        <nav aria-label="Main navigation">
+          <button class="nav-item active" data-view="today"><span>◌</span>Today</button>
+          <button class="nav-item" data-view="insights"><span>⌁</span>Insights</button>
+        </nav>
+        <div class="sidebar-foot">
+          <div class="daily-goal">
+            <div><span>Daily rhythm</span><strong id="goal-label">0 / 4</strong></div>
+            <div class="goal-track"><div id="goal-fill"></div></div>
+          </div>
+          <button id="theme-button" class="icon-button" aria-label="Toggle theme" title="Toggle theme">☼</button>
+          <button id="settings-button" class="icon-button" aria-label="Open settings" title="Settings and backup">•••</button>
+        </div>
+      </aside>
+
+      <main>
+        <section id="today-view" class="view active-view">
+          <header class="topbar">
+            <div>
+              <p id="date-label" class="eyebrow"></p>
+              <h1>Make room for one thing.</h1>
+            </div>
+            <div class="status-chip"><i></i><span>Stored on this device</span></div>
+          </header>
+
+          <div class="workspace-grid">
+            <section class="timer-card card">
+              <div class="mode-tabs" role="tablist">
+                <button class="mode active" data-mode="focus">Focus</button>
+                <button class="mode" data-mode="short">Short break</button>
+                <button class="mode" data-mode="long">Long break</button>
+              </div>
+              <div class="timer-wrap">
+                <svg class="timer-ring" viewBox="0 0 260 260" aria-hidden="true">
+                  <circle class="ring-back" cx="130" cy="130" r="112"></circle>
+                  <circle id="ring-progress" class="ring-progress" cx="130" cy="130" r="112"></circle>
+                </svg>
+                <div class="timer-face">
+                  <span id="timer-label">Ready when you are</span>
+                  <strong id="timer">25:00</strong>
+                  <span id="active-task-label">No task selected</span>
+                </div>
+              </div>
+              <div class="timer-actions">
+                <button id="reset-button" class="round-button" aria-label="Reset timer" title="Reset">↺</button>
+                <button id="start-button" class="primary-button">Begin focus</button>
+                <button id="skip-button" class="round-button" aria-label="Skip timer" title="Skip">↦</button>
+              </div>
+              <p class="shortcut-hint"><kbd>Space</kbd> starts or pauses · <kbd>N</kbd> adds a task</p>
+            </section>
+
+            <section class="tasks-card card">
+              <div class="card-heading">
+                <div><span class="eyebrow">A gentle queue</span><h2>Today’s tasks</h2></div>
+                <span id="task-count" class="counter">0 open</span>
+              </div>
+              <form id="task-form" class="task-form">
+                <input id="task-input" maxlength="160" autocomplete="off" placeholder="What deserves your attention?" aria-label="New task" />
+                <button type="submit" aria-label="Add task">+</button>
+              </form>
+              <div id="task-list" class="task-list"></div>
+              <div id="empty-tasks" class="empty-state">
+                <span>✦</span>
+                <p>Your day is clear.</p>
+                <small>Add one meaningful thing.</small>
+              </div>
+              <button id="clear-completed" class="text-button">Clear completed</button>
+            </section>
+
+            <section class="notes-card card">
+              <div class="card-heading">
+                <div><span class="eyebrow">No ceremony</span><h2>Scratchpad</h2></div>
+                <span id="save-state">Saved</span>
+              </div>
+              <textarea id="note" placeholder="Loose thoughts, links to revisit, the next tiny step…" aria-label="Scratchpad"></textarea>
+              <div class="note-foot"><span>Everything autosaves locally.</span><span id="note-count">0 words</span></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="insights-view" class="view">
+          <header class="topbar">
+            <div><p class="eyebrow">Your quiet momentum</p><h1>A week at a glance.</h1></div>
+          </header>
+          <div class="insights-grid">
+            <section class="metric card"><span>Today</span><strong id="today-minutes">0</strong><small>focused minutes</small></section>
+            <section class="metric card"><span>This week</span><strong id="week-sessions">0</strong><small>completed sessions</small></section>
+            <section class="metric card"><span>Current rhythm</span><strong id="streak">0</strong><small>day streak</small></section>
+            <section class="chart-card card">
+              <div class="card-heading"><div><span class="eyebrow">Last seven days</span><h2>Focus rhythm</h2></div></div>
+              <div id="week-chart" class="week-chart"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="settings-dialog">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-head"><div><span class="eyebrow">Preferences</span><h2>Keep your rhythm yours.</h2></div><button value="cancel" aria-label="Close">×</button></div>
+        <label class="setting-row"><span><strong>Daily focus goal</strong><small>Completed focus sessions</small></span><input id="goal-input" type="number" min="1" max="12" /></label>
+        <div class="backup-actions">
+          <button id="export-button" type="button">Export backup</button>
+          <button id="import-button" type="button">Import backup</button>
+        </div>
+        <p class="privacy-note">Stillday has no account, analytics, or cloud. Your tasks and notes stay on this computer unless you export them.</p>
+      </form>
+    </dialog>
+
+    <div id="toast" role="status"></div>
+    <script src="model.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
